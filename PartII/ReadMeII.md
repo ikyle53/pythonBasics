@@ -227,16 +227,73 @@ We are not changing the original string, but creating a new string from the resu
 ## help - using dir and then passing one of the methods to the `help` built-in function will ask what it does and return a reply of what it does  
 
 `>>> help(S.replace)`  
-`Help on built-in function replace:
+`Help on built-in function replace:`  
 
-replace(old, new, count=-1, /) method of builtins.str instance
-    Return a copy with all occurrences of substring old replaced by new.
-    
-      count
-        Maximum number of occurrences to replace.
-        -1 (the default value) means replace all occurrences.
-    
-    If the optional argument count is given, only the first count occurrences are
+`replace(old, new, count=-1, /) method of builtins.str instance`  
+    `Return a copy with all occurrences of substring old replaced by new.`  
+      `count`  
+        `Maximum number of occurrences to replace.`  
+        `-1 (the default value) means replace all occurrences.`  
+    `If the optional argument count is given, only the first count occurrences are
     replaced.`  
+
+- `help` ships with python and is known as PyDoc, which extracts documentation from objects.  
+- `dir` and `help` can accept `objects` or the name of a data type (`str`, `list`, `dict`).  
+- This is a good way to get information about a specific method being used on your object.  
+
+## String escape notations  
+
+Strings have escape notations in the format of hexadecimal escape notations. `\xNN`  
+`>>> S = 'A\nB\tC'`   # \n means end-of-line and \t means tab  
+`>>> len(S)`  
+`5` # The `\` is ignored as part of the length method since it's an escape notation  
+
+`>>> ord('\n')` # \n is one character coded as a decimal value 10  
+`10`  
+
+`>>> S = 'A\0B\0C'`  # \0 is a binary zero byte and will not terminate the string  
+`>>> len(S)`  
+`5`  
+`>>> S`  
+`'A\x00B\x00C'` # non-printables are displayed as \xNN hex escapes  
+
+Python strings can use single or double quotes. Singles are preferred, but you can do multi-line string literals with triple quotes:  
+
+`>>> msg = """`  
+`aaaaaaaaa`  
+`bbb'''bbbbbbbbbb""bbbbbbbbb'bbbbbb`  
+`ccccccccccccc`  
+`"""`  
+`>>> msg`  
+`'\naaaaaaaaa\nbbb'''bbbbbbbbbb""bbbbbbbbb'bbbbbb\nccccccccccccc'`  
+
+### Unicode strings  
+
+`>>> 'sp\xc4m'`  
+`'spÄm'`  
+`>>> b'a\x01c'` # b stands for byte, which makes this a byte string, which is byte-based data  
+`b'a\x01c'`  
+
+`>>> u'sp\u00c4m` # u stands for unicode so this makes it a unicode string type
+`'spÄm'`  
+
+Strings handle both the 8-bit characters and the raw byte values.  
+`>>> print u'sp\xc4m'`  
+`'spÄm'`  
+`>>> 'a\x01c'`  
+`'a\x01c'`  
+`>>> b'a\x01c'`  
+`'a\x01c'`  
+
+Non-Unicode strings are sequences of 8-bit bytes that print with ASCII characters when possible. Unicode strings are sequences of unicode code points- which identifies numbers with characters. This doens't always map out to single bytes when encoded to files or when stored in memory.  
+`>>> 'spam'` # Characters may be 1, 2, or 4 bytes in memory  
+`spam`  
+`>>> 'spam'.encode('utf8')` # This encodes to 4 bytes in utf-8 in files  
+`b'spam'`  
+`>>> 'spam'.encode('utf16')` # This encodes to 10 bytes in utf-16  
+`b'\xff\xfes\x00p\x00a\x00m\x00'`  
+
+`>>> 'sp\xc4\u00c4\U000000c4m'`  
+`'spÄÄÄm'`  
 
 
