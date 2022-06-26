@@ -296,4 +296,130 @@ Non-Unicode strings are sequences of 8-bit bytes that print with ASCII character
 `>>> 'sp\xc4\u00c4\U000000c4m'`  
 `'spÄÄÄm'`  
 
+So, why are these important? Knowing unicode can allow you to embed code as code-point (numerical value that maps to a specific character) ordinal-value (ordered categories) integers in text strings.  
+
+Byte code on the other hand uses `\x` hexadecimal escapes to embed the encoded form of text, not its actual code point values.  
+
+`'\u00A3', '\u00A3'.encode('latin1'), b'\xA3'.decode('latin1')`  
+
+Python `v2.X` allows normal and unicode strings to mix, whereas `v3.X` never allows normal and byte strings to mix without explicit conversion.  
+
+> Unicode processing mostly comes down to trasnferring text data to and from files- the text is encoded to bytes when stored in a file, and then it's decoded into characters (code points) when it's read back into memory.  
+
+Becuase of this model files are content-specific in `v3.X`.  
+
+1. Text files - implement named encodings and accept and return `str` strings.
+
+2. Binary files - deal in `bytes` strings for raw binary data.  
+
+### Pattern matching with strings using `re`  
+
+Note: none of the string object's own methods support pattern-based text processing. This is an advanced tool.  
+
+`>>> import re`  
+`>>> match = re.match('Hello[\t]*(.*)world', 'Hello  Python world')`  
+`>>> match.group(1)`  
+`'Python '`  
+
+The above example searches for a substring that begins with the word `"Hello"` followed by zero or more spaces or tabs (`[\t]`) followed by arbitrary characters to be saved as a matched group (`(.*)`), terminated by the word `"world"`.  
+
+## Lists  
+
+Lists are the most general sequence provided by python. They're positionally ordered collections of arbitrarily typed object (meaning it's not predefined) and it also has no limit to how long the list can be. Lists are also mutable so they can be modified in place by assignmnet to offsets as well as a variety of list method calls.  
+
+`>>> L = [123, 'spam', 1.23]`  
+`>>> len(L)`  
+`3`  
+
+Lists can be indexed, sliced, and so on just like strings:  
+`>>> L[0]` #get an index  
+`123`  
+`>>> L[:-1]` #sliced the last index off  
+`[123, 'spam']`  
+`>>> L + [4, 5, 6]` #adds 4, 5, & 6 to the current list  
+`[123, 'spam', 1.23, 4, 5, 6]`  
+`>>> L * 2` #repeats the list twice  
+`[123, 'spam', 1.23, 123, 'spam', 1.23]`  
+`>>> L` #Lastly, the original object isn't changed  
+`[123, 'spam', 1.23]`
+
+> I am tempted to compare `list` to `array` in other languages. I see them as almost the same thing, but Python doesn't have the `type` constraints other languages do. I have a number, a string, and a floating-point number in my list above. Also, lists have no defined size so I can make it bigger or smaller on demand.  
+
+`>>> L.append('NI')` #adds `'NI'` to the list  
+`>>> L`  
+`[123, 'spam', 1.23, 'NI']`  
+
+`>>> L.pop(2)` #deletes the item at index 2  
+`1.23`  
+`>>> L`  
+`[123, 'spam', 'NI']`  
+
+There are a few more list methods that can do extra things like the one's above:  
+
+1. `insert` - insert an item at a given postion
+2. `remove` - remove a given item by its value
+3. `extend` - adds multiple items at the end of the list  
+
+There's also sorting methods for lists:  
+`>>> M = ['bb', 'cc', 'aa']` #Created a list of letters  
+`>>> M.sort()` #sorts the list by alphabetically  
+`>>> M`  
+`['aa', 'bb', 'cc']`  
+
+Similarly, it can reverse sort:  
+`>>> M.reverse()`  
+`>>> M`  
+`['cc', 'bb', 'aa']`  
+
+Both modify the list directly.  
+
+### Nesting  
+
+Nesting in Python allows us to create a nest with as big of a depth as we choose with any types we want.  
+
+#### Maxtrix  
+
+`>>> M = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]` #A 'matrix' which is a list of 3 lists.  
+
+`M` represents a 3x3 matrix in which we can accessin a variety of ways:  
+`>>> M[1]` #Get row 2  
+`[4, 5, 6]`  
+`>>> M[1][2]` #Get row 2 and the index of 2 (from row 2)
+`6`  
+
+### Comprehensions  
+
+Python includes an advanced operation known as a list comprehension expression. This operation can process my matrix and similar data structures like it.  
+
+`>>> col2 = [row[1] for row in M]`  
+`>>> col2`  
+`[2, 5, 8]`  
+
+Essentially if I stack the three lists I get a 3x3 grid matrix. I created `col2` that chooses 2, 5, and 8, which is the middle column of the matrix.  
+`[[1, 2, 3],`  
+`[4, 5, 6],`  
+`[7, 8, 9]]`  
+
+List comprehensions build a new list by running an expression on each item in a sequence, one at a time, from left to right. 1, 2, 3, 4, 5, 6, 7, 8, and 9 get put through the expression respectively and a new list is created based on the criteria. In this case I'm using row[1] and looping through M to get that item for the new list.  
+
+We can make it a little more complex:  
+`>>> [row[1] + 1 for row in M]`  
+`[3, 6, 9]`  
+`>>> [row[1] for row in M if row[1] % 2 == 0]` #This filters out odd numbers from the column we previously filtered for (2, 5, & 8). It adds an if clause that if it's divisible by 2 it can be added to the new list. Otherwise, it get's filtered out and not added to the new list.  
+`[2, 8]`  
+
+List comprehensions make new lists of results and can be used to to iterate over any iterable object.  
+`>>> diag = [M[i][i] for i in [0, 1, 2]]` #This iterates through our M object and uses `i` as an iterater that takes on the values of 0, 1, and 2 after each succesfful iteration of a list. Bascially, `i` starts off at the value of 0 and iterates to find index `[0]` of row `[0]` of our `M` matrix I created earlier. Once the iteration is successful it will then result in `1` for the first item of the new list. After the result it then takes on the value of 1 and iterates using that value. It goes through the second list (indexed as row[1]) and then iterates again to result in `5` using the index of that list of `[1]`. This repeats for `[2]` and I get the result below.  
+`>>> diag`  
+`[1, 5, 9]`  
+`>>> doubles = [c * 2 for i in 'spam']` #Repeats each character twice in the string `'spam'`  
+`>>> doubles`  
+`['ss', 'pp', 'aa', 'mm']`  
+
+These expressions can also be used to collect multiple values:  
+`>>> list(range(4))`  
+`[0, 1, 2, 3]`  
+`>>> list(range(-6, 7, 2))`  #Creates a list that ranges from -6 to +6 (not including 7) that counts up by 2.  
+`[-6, -4, -2, 0, 2, 4, 6]`  
+
 
