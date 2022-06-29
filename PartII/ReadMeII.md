@@ -409,10 +409,10 @@ We can make it a little more complex:
 `[2, 8]`  
 
 List comprehensions make new lists of results and can be used to to iterate over any iterable object.  
-`>>> diag = [M[i][i] for i in [0, 1, 2]]` #This iterates through our M object and uses `i` as an iterater that takes on the values of 0, 1, and 2 after each succesfful iteration of a list. Bascially, `i` starts off at the value of 0 and iterates to find index `[0]` of row `[0]` of our `M` matrix I created earlier. Once the iteration is successful it will then result in `1` for the first item of the new list. After the result it then takes on the value of 1 and iterates using that value. It goes through the second list (indexed as row[1]) and then iterates again to result in `5` using the index of that list of `[1]`. This repeats for `[2]` and I get the result below.  
+`>>> diag = [M[i][i] for i in [0, 1, 2]]` #This iterates through our M object and uses `i` as an iterater that takes on the values of 0, 1, and 2 after each succesfful iteration of a list. Bascially, `i` starts off at the value of 0 and iterates to find index `[0]` of row `[0]` of our `M` matrix I created earlier. Once the iteration successful it will then result in `1` for the first item of the new list. After the result it then takes on the value of 1 and iterates using that value. It goes through the second list (indexed as row[1]) and then iterates again to result in `5` using the index of that list of `[1]`. This repeats for `[2]` and I get the result below.  
 `>>> diag`  
 `[1, 5, 9]`  
-`>>> doubles = [c * 2 for i in 'spam']` #Repeats each character twice in the string `'spam'`  
+`>>> doubles = [c * 2 for c in 'spam']` #Repeats each character twice in the string `'spam'`  
 `>>> doubles`  
 `['ss', 'pp', 'aa', 'mm']`  
 
@@ -421,5 +421,19 @@ These expressions can also be used to collect multiple values:
 `[0, 1, 2, 3]`  
 `>>> list(range(-6, 7, 2))`  #Creates a list that ranges from -6 to +6 (not including 7) that counts up by 2.  
 `[-6, -4, -2, 0, 2, 4, 6]`  
+
+`>>> [[x ** 2, x ** 3] for x in range(4)]` #This is an expression that creates a list of x to the power of 2 and 3. It then loops through the range set at 4; starting from 0 and ending on 3.  
+
+Comprehensions can also be used to create generators:  
+`>>> G = (sum(row) for row in M)` #Creates a generator of row sums  
+`>>> next(G)`  
+`6`  
+`>>> next(G)`  
+`15`  
+`>>> next(G)`  
+`24`  
+
+`>>> list(map(sum, M))`  
+`[6, 15, 24]`  
 
 
