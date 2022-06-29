@@ -436,4 +436,330 @@ Comprehensions can also be used to create generators:
 `>>> list(map(sum, M))`  
 `[6, 15, 24]`  
 
+## Dictionaries  
 
+In python dicationaries are not sequences. They are instead known as mappings. This means they are a collection of other objects. It stores these objects by keys with no left-to-right order.  
+
+Dictionaries are mutable and can be changed on a whim.  
+
+Dictionaries are written with curly braces `{ }` and consist of key value pairs `{key: value}`. These are then indexed.  
+
+`>>> D = {'food': 'Spam', 'quantity': 4, 'color': 'red'}`  
+`>>> D['food']` #Square brackets are used to target the value of a key.  
+`Spam`  
+`>>> D['quantity'] += 1`  
+`>>> D`  
+`{'food': 'Spam', 'quantity': 5, 'color': 'red'}` #quantity is now 5  
+
+A dictionary can be formed one key at a time and add more key value pairs:  
+
+`>>> D = {}` #I created an empty dictionary  
+`>>> D['name'] = 'Kyle'` #I've now created a new key by assignment  
+`>>> D['job'] = 'Software Developer'`  
+`>>> D['age'] = 31`  
+`>>> D`  
+`{'age': 31, 'job': 'Software Developer', 'name': 'Kyle'}` #New dictionary!  
+`>>> print(D['name'])`  
+`Kyle`  
+
+Two examples of creating a dictionary using keywords and zipping:  
+
+### Keywords  
+
+`>>> kyle1 = dict(name='Kyle', job='dev', age=31)`  
+`>>> kyle1`  
+`{'age': 31, 'name': 'Kyle', 'job': 'dev'}`  
+
+### Zipping  
+
+`>>> kyle2 = dict(zip(['name', 'job', 'age'], ['Kyle', 'dev', 31]))`  
+`>>> kyle2`  
+`{'job': 'dev', 'name': 'Kyle', 'age': 31}`  
+
+### Nesting revisited  
+
+`rec = {'name': {'first': 'Kyle', 'last': 'Honaker'}, 'jobs': ['dev', 'mgr'], 'age': 31}`  
+`rec`  
+`{'name': {'first': 'Kyle', 'last': 'Honaker'}, 'jobs': ['dev', 'mgr'], 'age': 31}`  
+`rec['name']`  
+`{'first': 'Kyle', 'last': 'Honaker'}`  
+`rec['name']['last']`  
+`'Honaker'`  
+`rec['jobs']`  
+`['dev', 'mgr']`  
+`rec['jobs'][-1]`  
+`'mgr'`  
+`rec['jobs'].append('janitor')`  
+`rec`  
+
+### Dictionary methods  
+
+`D = {'a': 1, 'b': 2, 'c': 3}`  
+`D`  
+`{'a': 1, 'b': 2, 'c': 3}`  
+`D['e'] = 99` #Make a new key value pair  
+`D`  
+`{'a': 1, 'b': 2, 'c': 3, 'e': 99}`  
+`D['f']`  #f doesn't exist and throws an error  
+`Traceback (most recent call last):`  
+  `File "<pyshell#25>", line 1, in <module>`  
+   `D['f']`  
+`KeyError: 'f'`  
+`'f' in D` #This checks to see if f is in D ("if in" test)  
+`False`  
+`if not 'f' in D:`  #if f isn't in D we want it to print 'missing' using this if statement  
+    `print('missing')`  
+`missing`  
+
+#### Get method  
+
+`value = D.get('x', 0)`  
+`value`  
+`0`  
+`value = D['x'] if 'x' in D else 0`  
+`value`  
+`0`  
+
+#### Sorting key: for loops  
+
+`D`  
+`{'a': 1, 'b': 2, 'c': 3, 'e': 99}`  
+`Ks = list(D.keys())`  
+`Ks`  
+`['a', 'b', 'c', 'e']`  
+
+`for key in Ks:`  
+    `print(key, '=>', D[key])`  
+`a => 1`  
+`b => 2`  
+`c => 3`  
+`e => 99`  
+
+Another example using `sorted`:  
+
+`for key in sorted(D):`  
+    `print(key, '=>', D[key])`  
+`a => 1`  
+`b => 2`  
+`c => 3`  
+`e => 99`  
+
+### For/while looping  
+
+For loops typically work on sequenced objects as a sequence operation and on some objects that are not sequenced.  
+
+`for c in 'spam':`  #`c` is our loop variable  
+   `print(c.upper())`  #I call the loop variable to uppercase each printed string  
+
+`S`  
+`P`  
+`A`  
+`M`  
+
+While loops are more general for looping. It's not limited to stepping across sequences, but it generally reuqires more code.  
+
+`x = 4`  
+`while x > 0:`  #if x is more than 0 it will continue to run  
+    `print('spam!' * x)`  
+    `x -= 1`  #the while loop subtracts 1 each loop till 4 reaches 0 and meets the end condition  
+
+`spam!spam!spam!spam!`  
+`spam!spam!spam!`  
+`spam!spam!`  
+`spam!`  
+
+### Iteration and optimization  
+
+An object in Python is iterable if it is either a physically stores sequence in memory, or an object that generates one item at a time in the context of an iteration operation- a sort of 'virtual' sequence. They will have the `iteration protocol` (responds to `iter` and `next`)  
+
+`squares = [x ** 2 for x in [1, 2, 3, 4, 5]]` #A basic comprehension expression that squares a list of numbers  
+`squares`  
+`[1, 4, 9, 16, 25]`  
+
+It can also be written using a `for` loop that appends a new result with each iteration:  
+`squares = []`  
+`for x in [1, 2, 3, 4, 5]:`  
+    `squares.append(x ** 2)`  
+`squares`  
+`[1, 4, 9, 16, 25]`  
+
+## Tuples  
+
+Tuples are like a list that can't be changed, yet are sequenced. They are used to represent fixed collections items. They do support arbitrary types, arbitrary nesting, and sequence operations.  
+
+`T = (1, 2, 3, 4)`  
+`len(T)`  
+`4`  
+`T + (5, 6)`  
+`(1, 2, 3, 4, 5, 6)`  #I can add to the Tuple, but I can't change any of the values.  
+`T[0]`  
+`1`  
+
+`T.index(4)` #The index method can be used to find what value is assigned to which index  
+`3`  #4 resides at the index of 3  
+`T.count(4)` #The count method can also be used to determine how many times that value appears in the tuple.  
+`1` #4 only occurs once  
+
+I have to explicitly state for a new tuple object to be made if I want to change any of the values:  
+
+`T = (2,) + T[1:]` #I assign T as 2 + the remainder of T including and after the index of 1 (slicing).  
+`T`  
+`(2, 2, 3, 4)` #The result is a new T object with 2 as the new value in the `[0]` index.  
+
+> Side note - Parenthases enclosing a tuple can be ommitted. In contexts where commas don't really matter, the commas are what actually builds a tuple.  
+
+`T = 'spam', 3.0, [11, 12, 13]`  #Tuples support different types as well  
+`T[1]`  
+`3.0`  
+`T[2][1]`  #Nesting is also supported  
+`12`  
+
+> So why tuples? Tuples are just like list but are immutable, and that's the point. Immutability provides integrity to information that shouldn't be changed, such as days on a calendar. If only lists were used the list could be changed somewhere in the program unintentionally.  
+
+## Files  
+
+Files are a core type, but don't have a specific syntax provided for it. Instead files are called upon using the `open` function along with the file name.  
+
+`f = open('data.txt', 'w')`  #`w` means write. We are writing a new file  
+`f.write('Hello\n')`  #This writes the text `'Hello'` along with a new line  
+`6`  
+`f.write('world\n')`  
+`6`  
+`f.close()`  
+`f = open('data.txt')`  #`'r'` means read is default if the operation is ommitted  
+`text = f.read()`  
+`text`  
+`'Hello\nworld\n'`  
+`print(text)`  
+`Hello`  
+`world`  
+`text.split()`  
+`['Hello', 'world']`  
+
+### Binary bytes files  
+
+Binary byte files represent content as a special `bytes` string and allow me to access file content unaltered. This is used for processing media, accessing data created by C programs.  
+
+`import struct`  
+`packed = struct.pack('>i4sh', 7, b'spam', 8)` #This creates a packed binary data  
+`packed`  
+`b'\x00\x00\x00\x07spam\x00\x08'`  
+`file = open('data.bin', 'wb')` #I open the binary output file  
+`file.write(packed)` #I then write the packed binary data  
+`10`  
+`file.close()`  
+
+Reading binary data back:  
+
+`data = open('data.bin', 'rb').read()` #This opens and reads the binary data file  
+`data`  
+`b'\x00\x00\x00\x07spam\x00\x08'` #These are the 10 bytes that are still unaltered  
+`data[4:8]` #This is the bytes cliced in the middle  
+`b'spam'`  
+`list(data)`  #This list gives me a sequence of 8-bit bytes  
+`[0, 0, 0, 7, 115, 112, 97, 109, 0, 8]`  
+`struct.unpack('>i4sh', data)` #Lastly, I unpack the bytes data into an object again  
+`(7, b'spam', 8)`  
+
+### Unicode text files  
+
+Text files are used to process all sorts of text-based data. In Python we have to ask "what kind", which leads us to the text's unicode encoding type.  
+If I don't know the encoding type I can simply use Python's automatic encoding/decoding on reads:  
+
+`S = 'sp\xc4m'` #Non-ASCII unicode text  
+`S`  
+`'spÄm'`  
+`S[2]`  
+`'Ä'`  
+`file = open('unidata.txt', 'w', encoding='utf-8')`  #Write/encode UTF-8 text  
+`file.write(S)` #4 Characters get written  
+`4`  
+`file.close()`  
+`text = open('unidata.txt', encoding='utf-8').read()` #Read and decode the UTF-8 text  
+`text`  
+`'spÄm'`  
+`len(text)`  
+`4`  
+
+If needed, I can also step into binary mode to see what's truly stored in the the file:  
+
+`raw = open('unidata.txt', 'rb').read()` #This reads the raw encoded bytes  
+`raw`  
+`b'sp\xc3\x84m'` #It's actually 5 bytes in UTF-8  
+`len(raw)`  
+`5`  
+
+## Sets (Not a core type, but could be)  
+
+`X = set('spam')` #Makes a set out of a sequence  
+`X`  
+`{'m', 'a', 'p', 's'}`  
+`Y = {'h', 'a', 'm'}` #Makes a set using set literals  
+`X, Y`  
+`({'m', 'a', 'p', 's'}, {'h', 'm', 'a'})` #Makes a tuple of the 2 sets  
+`X & Y`  
+`{'m', 'a'}`  #Intersects where the two sets have the same characters  
+`X | Y`  
+`{'h', 'm', 'p', 's', 'a'}` #This unifies the two sets without repeating characters  
+`X - Y`  
+`{'p', 's'}` #Creates the difference in both sets  
+`X > Y` #Allows me to know if it's a superset  
+`False`  
+
+Sets are great for getting rid of duplicates, isolating differences, and performing equality tests without sorting (in iterable objects).  
+
+`list(set([1, 2, 1, 3, 1]))` #Filters out duplicates  
+`[1, 2, 3]`  
+`set('spam') - set('ham')` #Finds differences in the collections  
+`{'p', 's'}`  
+`set('spam') == set('asmp')` #Equality test to see if they are the same, regardless of order  
+`True`  
+
+## Decimal numbers & fractions  
+
+`1 / 3`  
+`0.3333333333333333`  
+`(2/3) + (1/2)`  
+`1.1666666666666665`  
+`import decimal`  
+`d = decimal.Decimal('3.141')`  
+`d + 1`  
+`Decimal('4.141')`  
+`decimal.getcontext().prec = 2`  
+`decimal.Decimal('1.00') / decimal.Decimal('3.00')`  
+`Decimal('0.33')`  
+`from fractions import Fraction`  
+`f = Fraction(2, 3)`  
+`f + 1`  
+`Fraction(5, 3)`  
+`f + Fraction(1, 2)`  
+`Fraction(7, 6)`  
+
+## Booleans as well!  
+
+`1 > 2, 1 < 2`  
+`(False, True)`  
+`bool('spam')`  
+`True`  
+
+## User-defined classes  
+
+`class Worker:`  
+    `def __init__(self, name, pay):` #Initializes when created  
+        `self.name = name` #Self is the new object  
+        `self.pay = pay`  
+    `def lastName(self):`  
+        `return self.name.split()[-1]` #This will split the name string on blanks/spaces and use the last name (-1)
+    `def giveRaise(self, percent):`  
+        `self.pay *= (1.0 + percent)` #This updates the pay in place
+
+
+`kyle = Worker('Kyle Honaker', 50000)`  
+`asaki = Worker('Asaki Honaker', 50000)`  
+`kyle.lastName()`  
+`'Honaker'`  
+`asaki.lastName()`  
+`'Honaker'`  
+`asaki.giveRaise(.10)`  
+`asaki.pay`  
+`55000.00000000001`  
