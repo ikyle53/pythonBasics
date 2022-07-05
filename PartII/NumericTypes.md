@@ -95,7 +95,7 @@ Parenthases group subexpressions: I can override the precedence rule with parent
 
 `>>> a = 3`  
 `>>> b = 4`  
-`>>> a + 1, a -1 `  
+`>>> a + 1, a -1`  
 `(4, 2)`  
 `>>> b * 3, b / 2`  
 `(12, 2.0)`  
@@ -104,4 +104,9 @@ Parenthases group subexpressions: I can override the precedence rule with parent
 `>>> 2 + 4.0, 2.0 ** b`  
 `(6.0, 16.0)`  
 
-The results are tuples of 2 values because the lines typed at the promt contain two expressions seperated by commas; that's why the results are displayed in parentheses.
+The results are tuples of 2 values because the lines typed at the promt contain two expressions seperated by commas; that's why the results are displayed in parentheses.  
+
+Firstly:  
+
+- Variable are created when they are first assigned values
+- Variables are replaced with their values when used in expressions
